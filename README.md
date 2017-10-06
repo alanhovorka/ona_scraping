@@ -20,3 +20,5 @@ caveats
 This interactive pulls location, rating and review info from TripAdvisor and there are other data sources out there that offer differing perspectives. It's only scanning what people who use Trip Advisor think are great or terrible places for tourism in D.C. 
 
 (little more)
+
+using aggregate ratings, top level

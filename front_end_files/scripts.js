@@ -19,10 +19,11 @@
 
 
 var init = function(domelement,data){
-	console.debug(domelement, data)
 	var svg = d3.select(domelement).append('svg')
-	var axis_shell = svg.append('g').attr('class','axis_shell')
-	var marks_shell = svg.append('g').attr('class','marks_shell')
+	var axis_shell = svg.append('g').attr('class','axis_shell is_transformed')
+	var y_axis_shell = axis_shell.append('g')
+	var x_axis_shell = axis_shell.append('g')
+	var marks_shell = svg.append('g').attr('class','marks_shell is_transformed')
 	var marks = marks_shell.selectAll('circle').attr('class','marks')
 		.data(data)
 		.enter()
@@ -34,15 +35,74 @@ var init = function(domelement,data){
 			|| document.documentElement.clientWidth
 			|| document.body.clientWidth;
 
-		console.debug(ww);
+		var width = ww;
+		var height = width;
+		var margin = {
+			'top':40,
+			'bottom':20,
+			'left':100,
+			'right':20
+		}
+
+		return {
+			'width':width,
+			'height':height,
+			'margin':margin
+		}
 	};
 	
 	var make_scales = function(settings){
 
+		var x = d3.scaleLinear()
+			.domain([0,5])
+			.range([0, settings.width - settings.margin.left - settings.margin.right])
+		
+		var y = d3.scalePow()
+			.domain([0,5000])
+			.range([settings.height - settings.margin.top - settings.margin.bottom, 0])
+			.exponent(0.35)
+			.clamp(true)
+
+		return {
+			'x' : x,
+			'y' : y
+		}
 	};
 	
 	var render = function(){
-		make_settings()
+
+		var settings = make_settings()
+		var scales = make_scales(settings) 
+
+		svg.attr('width',settings.width)
+			.attr('height',settings.height)
+
+		y_axis_shell.call(
+
+			d3.axisLeft(scales.y)
+				//.tickPadding()
+
+		)
+
+		d3.selectAll('.is_transformed')
+			.attr('transform','translate('+settings.margin.left+','+settings.margin.top+')')
+
+		marks.attr('r',2)
+			.attr('cx', function(d,i){
+				/*d.aggregateRating.ratingValue*/
+				if (d.aggregateRating){
+					var converted = parseFloat(d.aggregateRating.ratingValue.substring(0,3))
+
+					return scales.x(converted)
+				}
+			})
+			.attr('cy', function(d,i) {
+				if (d.aggregateRating) {
+					var converted = parseFloat(d.aggregateRating.reviewCount)
+
+					return scales.y(converted)
+				}
+			})
 	};
 
 	return {'render':render}
@@ -50,6 +110,7 @@ var init = function(domelement,data){
 
 d3.json('all_listings.json', function(err, data) {
 	var chart = init('#chart',data)
+	console.debug(data[1])
 	chart.render()
 	window.addEventListener('optimizedResize', function() {
 		chart.render()
