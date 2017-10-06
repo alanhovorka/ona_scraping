@@ -22,6 +22,6 @@ def process(page):
 for page in pages:
 	process(page)
 
-with open("all_listings.json", "w") as file:
+with open("front_end_files/all_listings.json", "w") as file:
 	file.write(json.dumps(all_listings))
 
