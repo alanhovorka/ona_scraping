@@ -1,4 +1,6 @@
 /*resize listener with throttling*/
+// color by establishment
+// 
 (function() {
 	var throttle = function(type, name, obj) {
 		obj = obj || window;
@@ -25,7 +27,12 @@ var init = function(domelement,data){
 	var x_axis_shell = axis_shell.append('g')
 	var marks_shell = svg.append('g').attr('class','marks_shell is_transformed')
 	var marks = marks_shell.selectAll('circle').attr('class','marks')
-		.data(data)
+		.data(data.filter(function(d){
+			if (d.aggregateRating) {
+				return true
+			}
+
+		}))
 		.enter()
 		.append('circle').attr('class','listing')
 
@@ -36,11 +43,11 @@ var init = function(domelement,data){
 			|| document.body.clientWidth;
 
 		var width = ww;
-		var height = width;
+		var height = 500;
 		var margin = {
 			'top':40,
 			'bottom':20,
-			'left':100,
+			'left':40,
 			'right':20
 		}
 
@@ -54,13 +61,13 @@ var init = function(domelement,data){
 	var make_scales = function(settings){
 
 		var x = d3.scaleLinear()
-			.domain([0,5])
+			.domain([1,5])
 			.range([0, settings.width - settings.margin.left - settings.margin.right])
 		
 		var y = d3.scalePow()
 			.domain([0,5000])
 			.range([settings.height - settings.margin.top - settings.margin.bottom, 0])
-			.exponent(0.35)
+			.exponent(.35)
 			.clamp(true)
 
 		return {
@@ -77,10 +84,22 @@ var init = function(domelement,data){
 		svg.attr('width',settings.width)
 			.attr('height',settings.height)
 
-		y_axis_shell.call(
+		x_axis_shell
+			.attr("transform","translate(0,"+( settings.height - settings.margin.bottom - settings.margin.top)+")")
+			.call(
+				d3.axisBottom(scales.x)
+					.tickValues([1,2,3,4,5])
+					.tickFormat(function(d){
+						return parseInt(d)
+					})
 
+			)
+
+		y_axis_shell.attr("transform","translate(-10,0)").call(
 			d3.axisLeft(scales.y)
-				//.tickPadding()
+				.tickValues([0,10,100,250,500,1000,2500,5000])
+				.tickSize(-(settings.width - settings.margin.left - settings.margin.right + 10))
+
 
 		)
 

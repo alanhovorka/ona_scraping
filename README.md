@@ -22,3 +22,15 @@ This interactive pulls location, rating and review info from TripAdvisor and the
 (little more)
 
 using aggregate ratings, top level
+
+
+/////
+Clean this up and make it interactive
+
+Geocode the data 
+
+Shapefiles
+
+Bind the data 
+
+Map with D3
