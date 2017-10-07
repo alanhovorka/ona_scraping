@@ -1,4 +1,4 @@
-# ona_scraping
+# HUNDREDS OF D.C. TRIPADVISOR LISTINGS, VISUALIZED
 With thousands of journalists flooding into the nation's capital, TripAdvisor data offers a snapshot of popular things to do in Washington, D.C.
 
 The ONA Student Newsroom collected more than 600 attraction listings to see how their ratings and number of reviews correlated.
