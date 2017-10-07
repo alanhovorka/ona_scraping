@@ -14,19 +14,133 @@
 	font-family: monospace;
 }
 .listing {
-	fill: #a00;
 	fill-opacity: 0.5;
 }
 
 .listing.hover {
 	stroke:  #000;
 	stroke-width: 2;
+	fill-opacity: 1;
 }
 
 .listing.fade {
 	fill:  #999;
-	fill-opacity: 0.1;
+	fill-opacity: 0.05;
 	pointer-events: none !important;
+}
+
+
+.transportation {
+	fill: orange;
+	background: orange;
+}
+
+
+.spa-wellness {
+	fill: #FD0;
+	background: #fd0;
+}
+
+.food-drink {
+	fill: #FD0;
+	background: #fd0;
+}
+
+.shopping {
+	fill: #FD0;
+	background: #fd0;
+}
+
+
+.museums {
+	fill: red;
+	background: red;
+}
+
+.sights-landmarks {
+	fill: red;
+	background: red;
+}
+
+.tours {
+	fill: red;
+	background: red;
+}
+
+.boats-tours-water-sports {
+	fill: red;
+	background: red;
+}
+.fun-games {
+	fill: #B0F;
+	background: #B0f;
+}
+
+.concerts-shows {
+	fill: #B0F;
+	background: #B0f;
+}
+.events {
+	fill: #B0F;
+	background: #B0f;
+}
+
+.nightlife {
+	fill: #B0F;
+	background: #B0f;
+}
+
+.outdoor-activities {
+	fill: green;
+	background: green;
+}
+
+.nature-parks {
+	fill: green;
+	background: green;
+}
+
+.water-amusement-parks {
+	fill: green;
+	background: green;
+}
+
+.traveler-resources {
+	fill: #7FF;
+	background: #7FF;
+}
+
+.more {
+	fill: #7FF;
+	background: #7FF;
+}
+
+.classes-workshops {
+	fill: #7FF;
+	background: #7FF;
+}
+
+.legend strong {
+	font-family: Helvetica, Arial, sans-serif;
+	color: #4a4a4a;
+	font-size: 12px;
+	display: block;
+	margin-left: 10px;
+}
+
+.legend > div {
+	display: inline-block;
+	font-family: monospace;
+	font-size: 12px;
+	color:  #4a4a4a;
+}
+
+.legend > div > span {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	margin: 0 5px 0 10px;
+	border-radius:  100%;
 }
 
 .custom-select-wrapper {
