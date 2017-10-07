@@ -13,4 +13,12 @@
 	font-size: 12px;
 	font-family: helvetica,arial,sans-serif;
 }
+.listing {
+	fill: #a00;
+	fill-opacity: 0.5;
+}
 
+.listing.fade {
+	fill:  #999;
+	fill-opacity: 0.1;
+}

@@ -16,8 +16,14 @@ def process(page):
 		# scpt_tag = json.loads(str(
 		# 	soup.find("script",{"type":"application/ld+json"}).string
 		# 	))
-		scpt_tag = str(soup.find("script",{"type":"application/ld+json"}).string)
-		all_listings.append(json.loads(scpt_tag))
+		scpt_tag = json.loads(str(soup.find("script",{"type":"application/ld+json"}).string))
+
+		details = soup.find("div",{"class":"detail"}).find_all("a")
+		if len(details) > 0:
+			print(str(details[-1].string))
+			scpt_tag["category"] = str(details[-1].string)
+
+		all_listings.append(scpt_tag)
 
 for page in pages:
 	process(page)

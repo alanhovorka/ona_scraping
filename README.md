@@ -17,7 +17,7 @@ Details on how to navigate the map and read the chart
 
 caveats
 
-This interactive pulls location, rating and review info from TripAdvisor and there are other data sources out there that offer differing perspectives. It's only scanning what people who use Trip Advisor think are great or terrible places for tourism in D.C. 
+This interactive pulls location, rating and review info from TripAdvisor and there are other data sources out there that offer differing perspectives. It's only scanning what people who use Trip Advisor think are great or terrible places for tourism in D.C. The scraper didn't capture all 159 listed bars in the D.C. area, just the top ones. 
 
 (little more)
 
@@ -34,3 +34,5 @@ Shapefiles
 Bind the data 
 
 Map with D3
+
+Filterable bubbles

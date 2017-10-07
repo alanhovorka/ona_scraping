@@ -1,6 +1,16 @@
 /*resize listener with throttling*/
 // color by establishment
 // 
+
+function slugify(text) {
+  return text.toString().toLowerCase()
+    .replace(/\s+/g, '-')           // Replace spaces with -
+    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+    .replace(/^-+/, '')             // Trim - from start of text
+    .replace(/-+$/, '');            // Trim - from end of text
+}
+
 (function() {
 	var throttle = function(type, name, obj) {
 		obj = obj || window;
@@ -19,6 +29,7 @@
    throttle('resize', 'optimizedResize');
 })();
 
+var catDict = {}
 
 var init = function(domelement,data){
 	var svg = d3.select(domelement).append('svg')
@@ -28,13 +39,47 @@ var init = function(domelement,data){
 	var marks_shell = svg.append('g').attr('class','marks_shell is_transformed')
 	var marks = marks_shell.selectAll('circle').attr('class','marks')
 		.data(data.filter(function(d){
+			
 			if (d.aggregateRating) {
+				if (catDict[d.category]) {
+					catDict[d.category]++
+				} else {
+					catDict[d.category] = 1
+				}
 				return true
 			}
 
 		}))
 		.enter()
-		.append('circle').attr('class','listing')
+		.append('circle').attr('class', function(d) {
+			return slugify(d.category) + ' listing'
+		})
+	
+	var select_menu_data = []
+
+	for (var prop in catDict) {
+		select_menu_data.push({
+			'display' : prop,
+			'slug' : slugify(prop),
+			'count' : catDict[prop]
+		})
+	}
+
+	var cm = d3.select('#select-menu')
+		
+	cm.selectAll('option')
+		.data(select_menu_data)
+		.enter().append('option')
+		.attr('value', function(d) {
+			return d.slug
+		})
+		.text(function(d) {
+			return d.display + ' (' +d.count+ ')'
+		})
+		
+	cm.on('change', function(d) {
+		highlight(this.value)
+	})
 
 	var make_settings = function(){
 		/*cross browser solution for dimensions*/
@@ -45,10 +90,10 @@ var init = function(domelement,data){
 		var width = ww;
 		var height = 500;
 		var margin = {
-			'top':40,
+			'top':60,
 			'bottom':20,
-			'left':40,
-			'right':20
+			'left':60,
+			'right':60
 		}
 
 		return {
@@ -106,7 +151,7 @@ var init = function(domelement,data){
 		d3.selectAll('.is_transformed')
 			.attr('transform','translate('+settings.margin.left+','+settings.margin.top+')')
 
-		marks.attr('r',2)
+		marks.attr('r',4)
 			.attr('cx', function(d,i){
 				/*d.aggregateRating.ratingValue*/
 				if (d.aggregateRating){
@@ -124,10 +169,21 @@ var init = function(domelement,data){
 			})
 	};
 
+	var unhighlight = function() {
+		marks.classed('fade', false)
+	}
+
+	var highlight = function(key) {
+		unhighlight()
+		marks.classed('fade', true)
+		d3.selectAll('.listing.'+key).classed('fade', false).raise()
+	}
+
 	return {'render':render}
 };
 
-d3.json('all_listings.json', function(err, data) {
+d3.json('all_listings.json?c=10', function(err, data) {
+
 	var chart = init('#chart',data)
 	console.debug(data[1])
 	chart.render()
