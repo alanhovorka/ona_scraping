@@ -11,6 +11,82 @@ function slugify(text) {
     .replace(/-+$/, '');            // Trim - from end of text
 }
 
+var getQuad = function(coords,size) {
+
+	var l = []
+
+	if (coords[1] > size[1]/2) {
+		l.push('s')
+	} else {
+		l.push('n')
+	}
+
+	if (coords[0] > (size[0]*.65) ) {
+		l.push('e')
+	}
+
+	if (coords[0] < (size[0]*.35)) {
+		l.push('w')
+	}
+
+	return l.join('')
+
+}
+
+var initTooltip = function() {
+
+	var formats = {
+		'none' : function(v) {
+			return v
+		},
+		'comma' : d3.format(',')
+	}
+	
+	var theTooltip = d3.select('.has-tooltip').select('.tooltip')
+
+	var fields = theTooltip.selectAll('.tt-update')
+
+	var updateFields = function(data) {
+		fields.each(function() {
+			var f = d3.select(this)
+			var o = this.dataset
+			if (o.format) {
+				f.text(formats[o.format](data[o.field]))
+			} else {
+				f.text(data[o.field])
+			}
+			
+		})
+
+	}
+
+	var position = function(data,coords,widthHeight) {
+
+		var region = getQuad(coords,widthHeight)
+
+		updateFields(data)
+
+		theTooltip
+			.classed('tooltip-active',true)
+			.classed('tooltip-' + region, true)
+			.style('left', coords[0] + 'px')
+			.style('top', coords[1] + 'px')
+	}
+
+	var deposition = function() {
+		
+		theTooltip.attr('class','tooltip')
+
+	}
+	
+	return {
+		'position': position,
+		'deposition' : deposition,
+		'updateFields' : updateFields
+	};
+
+};
+
 (function() {
 	var throttle = function(type, name, obj) {
 		obj = obj || window;
@@ -39,16 +115,12 @@ var init = function(domelement,data){
 	var marks_shell = svg.append('g').attr('class','marks_shell is_transformed')
 	var marks = marks_shell.selectAll('circle').attr('class','marks')
 		.data(data.filter(function(d){
-			
-			if (d.aggregateRating) {
-				if (catDict[d.category]) {
-					catDict[d.category]++
-				} else {
-					catDict[d.category] = 1
-				}
-				return true
+			if (catDict[d.category]) {
+				catDict[d.category]++
+			} else {
+				catDict[d.category] = 1
 			}
-
+			return true
 		}))
 		.enter()
 		.append('circle').attr('class', function(d) {
@@ -65,6 +137,7 @@ var init = function(domelement,data){
 		})
 	}
 
+	var theTooltip = initTooltip()
 	var cm = d3.select('#select-menu')
 		
 	cm.selectAll('option')
@@ -151,23 +224,33 @@ var init = function(domelement,data){
 		d3.selectAll('.is_transformed')
 			.attr('transform','translate('+settings.margin.left+','+settings.margin.top+')')
 
-		marks.attr('r',4)
+		marks.attr('r',6)
 			.attr('cx', function(d,i){
 				/*d.aggregateRating.ratingValue*/
-				if (d.aggregateRating){
-					var converted = parseFloat(d.aggregateRating.ratingValue.substring(0,3))
-
-					return scales.x(converted)
-				}
+				var converted = parseFloat(d.ratingValue.substring(0,3))
+				return scales.x(converted)
 			})
 			.attr('cy', function(d,i) {
-				if (d.aggregateRating) {
-					var converted = parseFloat(d.aggregateRating.reviewCount)
-
-					return scales.y(converted)
-				}
+				var converted = parseFloat(d.reviewCount)
+				return scales.y(converted)
+			})
+			.on('mouseover', function(d) {
+				var _this = d3.select(this).classed('hover',true).raise()
+				console.debug(d)
+				theTooltip.position(d,
+					[settings.margin.left+parseFloat(_this.attr('cx')), settings.margin.top+parseFloat(_this.attr('cy'))],
+					[settings.width, settings.height]
+				)
+			})
+			.on('mouseout', function() {
+				d3.select(this).classed('hover',false)
+				theTooltip.deposition()
 			})
 	};
+
+	d3.select('#reset').on('click', function() {
+		unhighlight()
+	})
 
 	var unhighlight = function() {
 		marks.classed('fade', false)

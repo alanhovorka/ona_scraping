@@ -5,15 +5,29 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title></title>
-	<link rel="stylesheet" href="state.css?c=11">
+	<link rel="stylesheet" href="state.css?c=12">
+	<link rel="stylesheet" href="tooltip.css?c=12">
+
 </head>
 <body>
 	
-	<select id="select-menu">
-	</select>
+	<div class="custom-select-wrapper">
+		<select class="custom-select" id="select-menu">
+		</select>
+	</div>
+	<button id="reset">Reset</button>
+	
+	<div class="has-tooltip">
+		<div id="chart"></div>
+		<div class="tooltip">
+			<div class="tooltip-inner">
+				<h4 class="tt-update" data-field="name" data-format="none"></h4>
+					<p><strong>Address:</strong>&nbsp;<span class="tt-update" data-field="address" data-format="none"></span></p>
+					<p><strong>Rating:</strong>&nbsp;<span class="tt-update" data-field="ratingValue" data-format="none"></span></p>
+					<p><strong>Review:</strong>&nbsp;<span class="tt-update" data-field="reviewCount" data-format="comma"></span></p>
 
-	<div id="chart">
-		
+			</div>
+		</div>
 	</div>
 	<script src="d3.js"></script>	
 	<script src="scripts.js?c=11"></script>

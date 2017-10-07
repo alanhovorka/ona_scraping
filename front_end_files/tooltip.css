@@ -1,0 +1,127 @@
+.has-tooltip {
+	position: relative;
+	cursor: pointer;
+	display: inline-block;
+}
+
+.tooltip {
+	position: absolute;
+	z-index: 9999;
+	display: none;
+	pointer-events: none;
+	width: 0px;
+	height: 0px;
+	-webkit-transform: translate(-50%,-50%);
+	text-align: left;
+}
+
+.tooltip.tooltip-active {
+	display: block
+}
+
+.tooltip .close-button {
+	color: #696969;
+	display: none;
+	position: absolute;
+	top: 4px;
+	right: 10px;
+	font-size: 20px;
+	z-index: 9999;
+}
+
+.tooltip .tooltip-inner {
+	position: relative;
+	border: 1px solid #aaa;
+	border-radius: 2px;
+	background: #fff;
+	padding: 10px;
+	width: 160px;
+}
+		
+.tooltip .tooltip-inner .clear {
+	display: block;
+	clear: both;
+}
+
+.tooltip .tooltip-inner:after {
+	display: block;
+	content: ' ';
+	background: #fff;
+	width: 10px;
+	height: 10px;
+	border-top: 1px solid #aaa;
+	border-right: 1px solid #aaa;
+	border-top-right-radius: 2px;
+	position: absolute;
+}
+
+.tooltip-n .tooltip-inner {
+	-webkit-transform: translate(-50%, 0%);
+	top: 50px;
+	left: 0px;
+}
+
+.tooltip-n .tooltip-inner::after {
+	top: -9px;
+	left: 50%;
+	-webkit-transform: rotate(-45deg) translate(-50%, 0%);
+}
+
+
+.tooltip-s .tooltip-inner {
+	-webkit-transform: translate(-50%, -100%);
+	bottom: 10px;
+	left: 0px;
+}
+.tooltip-s .tooltip-inner::after {
+		top: 100%;
+		left: 50%;
+		-webkit-transform: translate(-50%, -4px) rotate(135deg);
+	}
+
+
+.tooltip-nw .tooltip-inner {
+	-webkit-transform: translate(-10%, 0%);
+	top: 20px;
+	left: 0px;
+}
+.tooltip-nw .tooltip-inner::after {
+		top: -9px;
+		left: 10%;
+		-webkit-transform: rotate(-45deg) translate(-50%, 0%);
+	}
+
+
+.tooltip-ne .tooltip-inner {
+	-webkit-transform: translate(-90%, 0%);
+	top: 20px;
+	right: 0px;
+}
+.tooltip-ne .tooltip-inner::after {
+		top: -9px;
+		left: 90%;
+		-webkit-transform: rotate(-45deg) translate(-50%, 0%);
+	}
+
+.tooltip-sw .tooltip-inner {
+	-webkit-transform: translate(-10%, -100%);
+	bottom: 20px;
+	left: 0px;
+}
+.tooltip-sw .tooltip-inner::after {
+		top: 100%;
+		left: 10%;
+		-webkit-transform: translate(-50%, -4px) rotate(135deg);
+	}
+
+
+.tooltip-se .tooltip-inner {
+	-webkit-transform: translate(-90%, -100%);
+	bottom: 20px;
+	right: 0px;
+}
+.tooltip-se .tooltip-inner::after {
+		top: 100%;
+		left: 90%;
+		-webkit-transform: translate(-50%, -4px) rotate(135deg);
+	}

@@ -17,13 +17,18 @@ def process(page):
 		# 	soup.find("script",{"type":"application/ld+json"}).string
 		# 	))
 		scpt_tag = json.loads(str(soup.find("script",{"type":"application/ld+json"}).string))
-
+		niceObj = {}
 		details = soup.find("div",{"class":"detail"}).find_all("a")
-		if len(details) > 0:
+		if len(details) > 0 and 'aggregateRating' in scpt_tag:
 			print(str(details[-1].string))
-			scpt_tag["category"] = str(details[-1].string)
-
-		all_listings.append(scpt_tag)
+			niceObj = {
+				'name' : scpt_tag['name'],
+				'address' : scpt_tag['address']['streetAddress'],
+				'reviewCount' : scpt_tag['aggregateRating']['reviewCount'],
+				'ratingValue' : scpt_tag['aggregateRating']['ratingValue'],
+				'category' : str(details[-1].string)
+			}
+			all_listings.append(niceObj)
 
 for page in pages:
 	process(page)
