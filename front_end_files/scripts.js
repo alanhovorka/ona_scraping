@@ -236,7 +236,6 @@ var init = function(domelement,data){
 			})
 			.on('mouseover', function(d) {
 				var _this = d3.select(this).classed('hover',true).raise()
-				console.debug(d)
 				theTooltip.position(d,
 					[settings.margin.left+parseFloat(_this.attr('cx')), settings.margin.top+parseFloat(_this.attr('cy'))],
 					[settings.width, settings.height]
@@ -266,11 +265,12 @@ var init = function(domelement,data){
 };
 
 d3.json('all_listings.json?c=10', function(err, data) {
-
+	var pymChild = new pym.Child()
 	var chart = init('#chart',data)
-	console.debug(data[1])
 	chart.render()
+	pymChild.sendHeight()
 	window.addEventListener('optimizedResize', function() {
 		chart.render()
+		pymChild.sendHeight()
 	})
 });
