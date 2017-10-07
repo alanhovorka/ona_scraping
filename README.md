@@ -5,8 +5,6 @@ The ONA Student Newsroom collected more than 600 attraction listings to see how 
 
 The bulk of the attractions we collected received ratings above 3 stars, with the average rating sitting at 4.26 stars, but the number of reviews for each attraction varied wildly. The median review count was 15, while the average came in at about 405 reviews, signaling heavy skewness in this metric because of a small number of widely-reviewed attractions.
 
-[pym id="dc_trip_advisor" url="https://static.journalists.org/projects/dc-trip-advisor-matrix/index.html"]
-
 How we did it
 
 First, we found the location listings for Washington, D.C. on TripAdvisor's website and then pulled down all of the HTML for those pages on my computer for faster, local scraping. Once we compiled a list of some 600 locations to visit in Washington, D.C., we ran a BeautifulSoup script that grabbed the rating, number of reviews and establishment category in the HTML. The script compiled all of these individuals objects into a new json file that we used in the visualization.
